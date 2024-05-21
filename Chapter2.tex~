@@ -1,0 +1,36 @@
+\documentclass[12pt]{book}
+
+
+% Bra/ket notation
+\usepackage{mathtools}
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+\DeclarePairedDelimiterX\braket[2]{\langle}{\rangle}{#1\,\delimsize\vert\,\mathopen{}#2}
+
+
+\usepackage{amsmath} 
+\begin{document}
+\title{Quantum Mechanics}
+\author{Sakurai}
+\maketitle
+
+
+\chapter{Fundamental Concepts}
+
+\section{1.1: The Stern-Gerlach Experiment}
+
+\section{1.2: Kets, Bras, and Operators}
+The Bra(c)ket notation was deveop by Paul A. M. Dirac
+
+In the Stern-Gerlach experiment, states spanned a complex vector space with a dimmensionality of 2, for the two possible values of $S_{\rm z}$, which are spin-up and spin down. These also correspond to the two paths that the silver atoms can follow when subjected to the a SG apparatus.
+
+The physical state of a system is described by a \textbf{state vector} in the complex space. For example, in the Stern-Gerlach experiment, this was the spin orientation $S_{\rm z}$. A vector in the complex space is known as a $\texbf{ket}$, and is denoted by $\bra{\alpha}$
+
+
+\begin{align*}
+  \bra{a}       &= \bra*{\frac{a}{1}} \\
+  \ket{a}       &= \ket*{\frac{a}{1}} \\
+  \braket{a}{b} &= \braket*{\frac{a}{1}}{\frac{b}{1}}
+\end{align*}
+
+\end{document}
