@@ -1,0 +1,125 @@
+# Second DCM Identity by Differentiating the First Identity
+
+Goal: starting from the first identity
+\[
+C_i^{\,B}\dot C_B^{\,i} = [\omega]^\times,
+\]
+derive
+\[
+C_i^{\,B}\ddot C_B^{\,i} = [\dot\omega]^\times + ([\omega]^\times)^2.
+\]
+
+Throughout, \( [\omega]^\times \) is the cross-product matrix defined by
+\[
+[\omega]^\times \mathbf x := \boldsymbol\omega \times \mathbf x,
+\]
+and it satisfies \( ([\omega]^\times)^T = -[\omega]^\times \).
+
+---
+
+## Step 1: Differentiate Identity 1
+
+Start from:
+\[
+C_i^{\,B}\dot C_B^{\,i} = [\omega]^\times
+\]
+
+Take time derivative of both sides:
+\[
+\frac{d}{dt}\left(C_i^{\,B}\dot C_B^{\,i}\right)
+=
+\frac{d}{dt}\left([\omega]^\times\right)
+\]
+
+---
+
+## Step 2: Product rule on the left-hand side
+
+\[
+\dot C_i^{\,B}\dot C_B^{\,i} + C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times
+\]
+
+So if we can rewrite \(\dot C_i^{\,B}\dot C_B^{\,i}\) in terms of \([\omega]^\times\), we’re done.
+
+---
+
+## Step 3: Compute \(\dot C_i^{\,B}\) using Identity 1
+
+From Identity 1:
+\[
+C_i^{\,B}\dot C_B^{\,i} = [\omega]^\times
+\]
+
+Multiply on the left by \(C_B^{\,i}\) (since \(C_B^{\,i}C_i^{\,B}=I\)):
+\[
+\dot C_B^{\,i} = C_B^{\,i}[\omega]^\times
+\]
+
+Now take transpose of both sides:
+\[
+(\dot C_B^{\,i})^T = \left(C_B^{\,i}[\omega]^\times\right)^T
+\]
+
+Use \((AB)^T = B^T A^T\):
+\[
+(\dot C_B^{\,i})^T = ([\omega]^\times)^T (C_B^{\,i})^T
+\]
+
+Use \((C_B^{\,i})^T = C_i^{\,B}\) and \(([\omega]^\times)^T = -[\omega]^\times\):
+\[
+(\dot C_B^{\,i})^T = -[\omega]^\times C_i^{\,B}
+\]
+
+But \((\dot C_B^{\,i})^T = \dot C_i^{\,B}\), so:
+\[
+\dot C_i^{\,B} = -[\omega]^\times C_i^{\,B}
+\]
+
+---
+
+## Step 4: Substitute \(\dot C_i^{\,B}\) into Step 2
+
+Recall Step 2:
+\[
+\dot C_i^{\,B}\dot C_B^{\,i} + C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times
+\]
+
+Substitute \(\dot C_i^{\,B} = -[\omega]^\times C_i^{\,B}\):
+\[
+-[\omega]^\times C_i^{\,B}\dot C_B^{\,i} + C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times
+\]
+
+Now use Identity 1 again: \(C_i^{\,B}\dot C_B^{\,i} = [\omega]^\times\):
+\[
+-[\omega]^\times[\omega]^\times + C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times
+\]
+
+---
+
+## Step 5: Rearrange to isolate \(C_i^{\,B}\ddot C_B^{\,i}\)
+
+\[
+C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times + ([\omega]^\times)^2
+\]
+
+---
+
+## Final Result (Second Identity)
+
+\[
+\boxed{
+C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times + ([\omega]^\times)^2
+}
+\]
