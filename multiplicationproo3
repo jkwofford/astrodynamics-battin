@@ -1,0 +1,258 @@
+# Second DCM Identity by Direct Matrix Multiplication (Planar \(z\)-axis rotation)
+
+Goal: explicitly compute \(C_i^{\,B}\ddot C_B^{\,i}\) and show
+
+\[
+C_i^{\,B}\ddot C_B^{\,i} = [\dot\omega]^\times + \big([\omega]^\times\big)^2
+\]
+
+for a rotation about the \(z\)-axis by \(\theta(t)\).
+
+---
+
+## 1) Write down \(C_i^{\,B}\) and \(C_B^{\,i}\)
+
+Let \(c=\cos\theta(t)\), \(s=\sin\theta(t)\).
+
+Given:
+
+\[
+C_i^{\,B}=
+\begin{bmatrix}
+c & s & 0\\
+-s & c & 0\\
+0&0&1
+\end{bmatrix}
+\]
+
+Transpose to get:
+
+\[
+C_B^{\,i}=(C_i^{\,B})^T=
+\begin{bmatrix}
+c & -s & 0\\
+s & c & 0\\
+0&0&1
+\end{bmatrix}
+\]
+
+---
+
+## 2) Differentiate twice to get \(\ddot C_B^{\,i}\)
+
+First derivatives (chain rule):
+
+\[
+\dot c = -\dot\theta\, s,
+\qquad
+\dot s = \dot\theta\, c
+\]
+
+So
+
+\[
+\dot C_B^{\,i}=
+\begin{bmatrix}
+-\dot\theta\, s & -\dot\theta\, c & 0\\
+\dot\theta\, c & -\dot\theta\, s & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+Now differentiate entry-by-entry again. Useful second derivatives:
+
+\[
+\ddot c = -\ddot\theta\, s - \dot\theta^2\, c,
+\qquad
+\ddot s = \ddot\theta\, c - \dot\theta^2\, s
+\]
+
+But it’s easiest to directly differentiate each entry of \(\dot C_B^{\,i}\):
+
+- \(\frac{d}{dt}(-\dot\theta s)= -\ddot\theta s - \dot\theta(\dot s)= -\ddot\theta s - \dot\theta(\dot\theta c)= -\ddot\theta s - \dot\theta^2 c\)
+- \(\frac{d}{dt}(-\dot\theta c)= -\ddot\theta c - \dot\theta(\dot c)= -\ddot\theta c - \dot\theta(-\dot\theta s)= -\ddot\theta c + \dot\theta^2 s\)
+- \(\frac{d}{dt}(\dot\theta c)= \ddot\theta c + \dot\theta(\dot c)= \ddot\theta c + \dot\theta(-\dot\theta s)= \ddot\theta c - \dot\theta^2 s\)
+- \(\frac{d}{dt}(-\dot\theta s)= -\ddot\theta s - \dot\theta^2 c\)
+
+Thus
+
+\[
+\ddot C_B^{\,i}=
+\begin{bmatrix}
+-\ddot\theta\, s - \dot\theta^2\, c
+&
+-\ddot\theta\, c + \dot\theta^2\, s
+& 0\\
+\ddot\theta\, c - \dot\theta^2\, s
+&
+-\ddot\theta\, s - \dot\theta^2\, c
+& 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+---
+
+## 3) Multiply \(C_i^{\,B}\ddot C_B^{\,i}\) explicitly
+
+Compute
+
+\[
+C_i^{\,B}\ddot C_B^{\,i}
+=
+\begin{bmatrix}
+c & s & 0\\
+-s & c & 0\\
+0&0&1
+\end{bmatrix}
+\begin{bmatrix}
+-\ddot\theta\, s - \dot\theta^2\, c
+&
+-\ddot\theta\, c + \dot\theta^2\, s
+& 0\\
+\ddot\theta\, c - \dot\theta^2\, s
+&
+-\ddot\theta\, s - \dot\theta^2\, c
+& 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+### Entry (1,1)
+
+\[
+c(-\ddot\theta s-\dot\theta^2 c)+s(\ddot\theta c-\dot\theta^2 s)
+=
+-\ddot\theta cs-\dot\theta^2 c^2+\ddot\theta sc-\dot\theta^2 s^2
+=
+-\dot\theta^2(c^2+s^2)
+=
+-\dot\theta^2
+\]
+
+### Entry (1,2)
+
+\[
+c(-\ddot\theta c+\dot\theta^2 s)+s(-\ddot\theta s-\dot\theta^2 c)
+=
+-\ddot\theta(c^2+s^2)+\dot\theta^2(cs-sc)
+=
+-\ddot\theta
+\]
+
+### Entry (2,1)
+
+\[
+(-s)(-\ddot\theta s-\dot\theta^2 c)+c(\ddot\theta c-\dot\theta^2 s)
+=
+\ddot\theta(s^2+c^2)+\dot\theta^2(sc-cs)
+=
+\ddot\theta
+\]
+
+### Entry (2,2)
+
+\[
+(-s)(-\ddot\theta c+\dot\theta^2 s)+c(-\ddot\theta s-\dot\theta^2 c)
+=
+\ddot\theta(sc-cs)-\dot\theta^2(s^2+c^2)
+=
+-\dot\theta^2
+\]
+
+All third-row/third-column entries are zero.
+
+Therefore
+
+\[
+C_i^{\,B}\ddot C_B^{\,i}
+=
+\begin{bmatrix}
+-\dot\theta^2 & -\ddot\theta & 0\\
+\ddot\theta & -\dot\theta^2 & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+---
+
+## 4) Compute the RHS: \([\dot\omega]^\times + ([\omega]^\times)^2\)
+
+For a \(z\)-axis rotation:
+
+\[
+\boldsymbol\omega=
+\begin{bmatrix}
+0\\0\\\dot\theta
+\end{bmatrix},
+\qquad
+\dot{\boldsymbol\omega}=
+\begin{bmatrix}
+0\\0\\\ddot\theta
+\end{bmatrix}
+\]
+
+Cross-product matrices:
+
+\[
+[\omega]^\times=
+\begin{bmatrix}
+0 & -\dot\theta & 0\\
+\dot\theta & 0 & 0\\
+0&0&0
+\end{bmatrix},
+\qquad
+[\dot\omega]^\times=
+\begin{bmatrix}
+0 & -\ddot\theta & 0\\
+\ddot\theta & 0 & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+Square \( [\omega]^\times \):
+
+\[
+([\omega]^\times)^2
+=
+\begin{bmatrix}
+0 & -\dot\theta & 0\\
+\dot\theta & 0 & 0\\
+0&0&0
+\end{bmatrix}
+\begin{bmatrix}
+0 & -\dot\theta & 0\\
+\dot\theta & 0 & 0\\
+0&0&0
+\end{bmatrix}
+=
+\begin{bmatrix}
+-\dot\theta^2 & 0 & 0\\
+0 & -\dot\theta^2 & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+Now add:
+
+\[
+[\dot\omega]^\times + ([\omega]^\times)^2
+=
+\begin{bmatrix}
+-\dot\theta^2 & -\ddot\theta & 0\\
+\ddot\theta & -\dot\theta^2 & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+---
+
+## Final Match (Second Identity Verified)
+
+\[
+\boxed{
+C_i^{\,B}\ddot C_B^{\,i}
+=
+[\dot\omega]^\times + \big([\omega]^\times\big)^2
+}
+\]
