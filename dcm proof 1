@@ -1,0 +1,123 @@
+# Derivation of the First DCM Identity
+
+Goal: show that
+
+\[
+C_i^{\,B}\,\dot C_B^{\,i} = [\omega]^\times
+\]
+
+where the “cross-product matrix” \( [\omega]^\times \) is defined by
+
+\[
+[\omega]^\times \mathbf x := \boldsymbol\omega \times \mathbf x
+\]
+
+---
+
+## Step 1: Start from DCM orthogonality
+
+Because \(C_B^{\,i}\) is a direction cosine matrix (a rotation matrix), it is orthogonal:
+
+\[
+C_B^{\,i}(C_B^{\,i})^T = I
+\]
+
+---
+
+## Step 2: Differentiate the orthogonality condition
+
+Differentiate both sides with respect to time:
+
+\[
+\frac{d}{dt}\left(C_B^{\,i}(C_B^{\,i})^T\right) = \frac{d}{dt}(I) = 0
+\]
+
+Apply the product rule:
+
+\[
+\dot C_B^{\,i}(C_B^{\,i})^T + C_B^{\,i}(\dot C_B^{\,i})^T = 0
+\]
+
+---
+
+## Step 3: Rearrange and identify skew-symmetry
+
+Rearrange:
+
+\[
+\dot C_B^{\,i}(C_B^{\,i})^T = -\,C_B^{\,i}(\dot C_B^{\,i})^T
+\]
+
+Now use the transpose rule \( (AB)^T = B^T A^T \):
+
+\[
+\left(\dot C_B^{\,i}(C_B^{\,i})^T\right)^T
+=
+C_B^{\,i}(\dot C_B^{\,i})^T
+\]
+
+Substitute this into the rearranged equation:
+
+\[
+\dot C_B^{\,i}(C_B^{\,i})^T
+=
+-\left(\dot C_B^{\,i}(C_B^{\,i})^T\right)^T
+\]
+
+Define
+
+\[
+A := \dot C_B^{\,i}(C_B^{\,i})^T
+\]
+
+Then the previous line reads
+
+\[
+A = -A^T
+\quad\Longleftrightarrow\quad
+A^T = -A
+\]
+
+By definition, \(A^T=-A\) means \(A\) is **skew-symmetric**.
+
+---
+
+## Step 4: Any \(3\times 3\) skew-symmetric matrix equals a cross-product matrix
+
+A general \(3\times 3\) skew-symmetric matrix has the form
+
+\[
+A =
+\begin{bmatrix}
+0 & -\omega_z & \omega_y \\
+\omega_z & 0 & -\omega_x \\
+-\omega_y & \omega_x & 0
+\end{bmatrix}
+\]
+
+for some vector \(\boldsymbol\omega = (\omega_x,\omega_y,\omega_z)^T\).  
+This matrix is exactly \( [\omega]^\times \). Therefore there exists a unique \(\boldsymbol\omega\) such that
+
+\[
+\dot C_B^{\,i}(C_B^{\,i})^T = [\omega]^\times
+\]
+
+---
+
+## Step 5: Convert to the standard form \(C_i^{\,B}\dot C_B^{\,i}\)
+
+Since \(C_i^{\,B} = (C_B^{\,i})^T\), the identity becomes
+
+\[
+C_i^{\,B}\dot C_B^{\,i} = [\omega]^\times
+\]
+
+---
+
+## Final Result
+
+\[
+\boxed{
+C_i^{\,B}\,\dot C_B^{\,i} = [\omega]^\times
+}
+\]
