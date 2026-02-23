@@ -1,0 +1,184 @@
+%% ECEF -> Geodetic (Slides Notation): SIMPLE vs ITERATIVE
+% Uses the notation shown on the slides:
+%   R^E = [x^E, y^E, z^E]^T
+%   rho = sqrt((x^E)^2 + (y^E)^2)
+%   L   = longitude
+%   lambda = geodetic latitude
+%   h   = altitude
+%   R_lambda = radius of curvature in prime vertical (often called N)
+%
+% Units:
+%   - ECEF in km
+%   - a, b in km
+%   - h in km (also printed in meters)
+% Angles printed in degrees.
+
+clear; clc;
+
+fprintf('============================================================\n');
+fprintf('ECEF -> Geodetic (Slides notation): SIMPLE vs ITERATIVE\n');
+fprintf('============================================================\n\n');
+
+%% -----------------------
+% Inputs (from the slides)
+% -----------------------
+xE = -910.64;     % x^E [km]
+yE =  764.118;    % y^E [km]
+zE =  7463.198;   % z^E [km]
+
+fprintf('[INPUT] R^E (ECEF) in km:\n');
+fprintf('  x^E = %.6f km\n', xE);
+fprintf('  y^E = %.6f km\n', yE);
+fprintf('  z^E = %.6f km\n\n', zE);
+
+% Ellipsoid parameters (km) from slide
+a = 6378.137;     % semi-major axis [km]
+b = 6356.752;     % semi-minor axis [km]
+
+fprintf('[ELLIPSOID] a = %.6f km, b = %.6f km\n', a, b);
+
+% Eccentricities
+e2  = (a^2 - b^2)/a^2;   % e^2
+ep2 = (a^2 - b^2)/b^2;   % e'^2 (second eccentricity squared)
+
+fprintf('[ELLIPSOID] e^2  = %.12f\n', e2);
+fprintf('[ELLIPSOID] e''^2 = %.12f\n\n', ep2);
+
+%% -----------------------
+% Shared quantities
+% -----------------------
+rho = hypot(xE, yE);
+
+fprintf('[GEOMETRY] rho = sqrt((x^E)^2 + (y^E)^2) = %.12f km\n\n', rho);
+
+% Longitude
+L = atan2(yE, xE);
+
+fprintf('[LONGITUDE] L = atan2(y^E, x^E)\n');
+fprintf('  L = %.12f rad = %.12f deg\n\n', L, rad2deg(L));
+
+%% ============================================================
+% SIMPLE algorithm (Bowring-style closed form from slide)
+% ============================================================
+fprintf('------------------------------------------------------------\n');
+fprintf('[SIMPLE] Closed-form algorithm (slide formula)\n');
+fprintf('------------------------------------------------------------\n');
+
+theta = atan2(zE*a, rho*b); % theta = atan(z^E a / (rho b))
+
+fprintf('Compute auxiliary angle theta:\n');
+fprintf('  theta = atan2(z^E*a, rho*b)\n');
+fprintf('  theta = %.12f rad = %.12f deg\n\n', theta, rad2deg(theta));
+
+lambda_simple = atan2( zE + ep2*b*(sin(theta)^3), ...
+                       rho - e2 *a*(cos(theta)^3) );
+
+fprintf('Compute geodetic latitude lambda (simple):\n');
+fprintf('  lambda = atan2(z^E + e''^2*b*sin^3(theta), rho - e^2*a*cos^3(theta))\n');
+fprintf('  lambda_simple = %.12f rad = %.12f deg\n\n', ...
+        lambda_simple, rad2deg(lambda_simple));
+
+R_lambda_simple = a / sqrt(1 - e2*(sin(lambda_simple)^2));
+
+fprintf('Compute R_lambda (prime vertical radius of curvature):\n');
+fprintf('  R_lambda = a / sqrt(1 - e^2*sin^2(lambda))\n');
+fprintf('  R_lambda_simple = %.12f km\n\n', R_lambda_simple);
+
+% Altitude from slide form: h = rho/cos(lambda) - R_lambda
+if abs(cos(lambda_simple)) > 1e-12
+    h_simple = rho/cos(lambda_simple) - R_lambda_simple;
+else
+    % Near poles fallback (rare)
+    h_simple = zE/sin(lambda_simple) - R_lambda_simple*(1 - e2);
+end
+
+fprintf('Compute altitude h (simple):\n');
+fprintf('  h_simple = %.12f km (%.6f m)\n\n', h_simple, h_simple*1000);
+
+%% ============================================================
+% ITERATIVE algorithm (slide-style iteration with R_lambda and h)
+% ============================================================
+fprintf('------------------------------------------------------------\n');
+fprintf('[ITERATIVE] Iterative algorithm (slides notation)\n');
+fprintf('------------------------------------------------------------\n');
+
+% Initialization (typical slide choices)
+h = 0.0;          % h_0
+R_lambda = a;     % R_lambda,0 (often start with a)
+lambda = atan2(zE, rho);  % a reasonable initial guess for lambda
+
+fprintf('Initialization:\n');
+fprintf('  h_0 = %.6f km\n', h);
+fprintf('  R_lambda,0 = a = %.6f km\n', R_lambda);
+fprintf('  lambda_0 = atan2(z^E, rho) = %.12f deg\n\n', rad2deg(lambda));
+
+maxIter = 50;
+tolLam  = 1e-14;   % rad tolerance for latitude
+tolH    = 1e-12;   % km tolerance for altitude
+
+for k = 1:maxIter
+    % ---- Step A (slide): sin(lambda) = z^E / (R_lambda(1-e^2) + h)
+    sin_lambda = zE / (R_lambda*(1 - e2) + h);
+
+    % Clamp to [-1,1] to avoid numerical issues
+    sin_lambda = max(-1, min(1, sin_lambda));
+
+    % ---- Step A (slide): lambda = atan( (z^E + e^2 R_lambda sin(lambda)) / rho )
+    lambda_new = atan2( zE + e2*R_lambda*sin_lambda, rho );
+
+    % ---- Step B (slide): R_lambda = a / sqrt(1 - e^2 sin^2(lambda))
+    R_lambda_new = a / sqrt(1 - e2*(sin(lambda_new)^2));
+
+    % ---- Step C (slide): h = rho/cos(lambda) - R_lambda
+    if abs(cos(lambda_new)) > 1e-12
+        h_new = rho/cos(lambda_new) - R_lambda_new;
+    else
+        h_new = zE/sin(lambda_new) - R_lambda_new*(1 - e2);
+    end
+
+    dLam = abs(lambda_new - lambda);
+    dH   = abs(h_new - h);
+
+    fprintf('Iter %2d:\n', k);
+    fprintf('  lambda = %.12f deg\n', rad2deg(lambda_new));
+    fprintf('  R_lambda = %.12f km\n', R_lambda_new);
+    fprintf('  h = %.12f km\n', h_new);
+    fprintf('  |dLambda| = %.3e rad, |dH| = %.3e km\n\n', dLam, dH);
+
+    % Update
+    lambda = lambda_new;
+    R_lambda = R_lambda_new;
+    h = h_new;
+
+    % Convergence
+    if dLam < tolLam && dH < tolH
+        fprintf('  -> Converged at iteration %d\n\n', k);
+        break;
+    end
+end
+
+lambda_iter = lambda;
+h_iter = h;
+R_lambda_iter = R_lambda;
+
+fprintf('[ITERATIVE RESULT]\n');
+fprintf('  lambda_iter = %.12f deg\n', rad2deg(lambda_iter));
+fprintf('  L           = %.12f deg\n', rad2deg(L));
+fprintf('  h_iter      = %.12f km (%.6f m)\n', h_iter, h_iter*1000);
+fprintf('  R_lambda    = %.12f km\n\n', R_lambda_iter);
+
+%% ============================================================
+% Error report: SIMPLE - ITERATIVE
+% ============================================================
+fprintf('------------------------------------------------------------\n');
+fprintf('[ERROR] SIMPLE minus ITERATIVE\n');
+fprintf('------------------------------------------------------------\n');
+
+dLambda_deg = rad2deg(lambda_simple - lambda_iter);
+dh_km = h_simple - h_iter;
+
+fprintf('Delta lambda (deg)    = %.12e deg\n', dLambda_deg);
+fprintf('Delta lambda (arcsec) = %.12e arcsec\n', dLambda_deg*3600);
+fprintf('Delta h               = %.12e km = %.6f m\n\n', dh_km, dh_km*1000);
+
+fprintf('Done.\n');
