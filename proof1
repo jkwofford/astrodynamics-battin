@@ -1,0 +1,166 @@
+# First DCM Identity by Direct Multiplication (Planar \(z\)-axis rotation)
+
+Goal: explicitly compute \(C_i^{\,B}\dot C_B^{\,i}\) for the planar DCM and show it equals \( [\omega]^\times \).
+
+---
+
+## 1) Write down the DCMs
+
+Given (from the slide) the inertial-to-body DCM:
+
+\[
+C_i^{\,B}=
+\begin{bmatrix}
+\cos\theta & \sin\theta & 0\\
+-\sin\theta & \cos\theta & 0\\
+0&0&1
+\end{bmatrix}
+\]
+
+The inverse (transpose) is the body-to-inertial DCM:
+
+\[
+C_B^{\,i} = (C_i^{\,B})^T =
+\begin{bmatrix}
+\cos\theta & -\sin\theta & 0\\
+\sin\theta & \cos\theta & 0\\
+0&0&1
+\end{bmatrix}
+\]
+
+---
+
+## 2) Differentiate \(C_B^{\,i}\) entry-by-entry
+
+Use the chain rule:
+
+\[
+\frac{d}{dt}\cos\theta = -\dot\theta \sin\theta,
+\qquad
+\frac{d}{dt}\sin\theta = \dot\theta \cos\theta
+\]
+
+Therefore:
+
+\[
+\dot C_B^{\,i}
+=
+\begin{bmatrix}
+-\dot\theta\sin\theta & -\dot\theta\cos\theta & 0\\
+\dot\theta\cos\theta & -\dot\theta\sin\theta & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+---
+
+## 3) Multiply \(C_i^{\,B}\dot C_B^{\,i}\) explicitly
+
+Compute:
+
+\[
+C_i^{\,B}\dot C_B^{\,i}
+=
+\begin{bmatrix}
+\cos\theta & \sin\theta & 0\\
+-\sin\theta & \cos\theta & 0\\
+0&0&1
+\end{bmatrix}
+\begin{bmatrix}
+-\dot\theta\sin\theta & -\dot\theta\cos\theta & 0\\
+\dot\theta\cos\theta & -\dot\theta\sin\theta & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+### Entry (1,1)
+
+\[
+(\cos\theta)(-\dot\theta\sin\theta)+(\sin\theta)(\dot\theta\cos\theta)
+=
+-\dot\theta\sin\theta\cos\theta+\dot\theta\sin\theta\cos\theta
+=0
+\]
+
+### Entry (1,2)
+
+\[
+(\cos\theta)(-\dot\theta\cos\theta)+(\sin\theta)(-\dot\theta\sin\theta)
+=
+-\dot\theta(\cos^2\theta+\sin^2\theta)
+=
+-\dot\theta
+\]
+
+### Entry (2,1)
+
+\[
+(-\sin\theta)(-\dot\theta\sin\theta)+(\cos\theta)(\dot\theta\cos\theta)
+=
+\dot\theta(\sin^2\theta+\cos^2\theta)
+=
+\dot\theta
+\]
+
+### Entry (2,2)
+
+\[
+(-\sin\theta)(-\dot\theta\cos\theta)+(\cos\theta)(-\dot\theta\sin\theta)
+=
+\dot\theta\sin\theta\cos\theta-\dot\theta\sin\theta\cos\theta
+=0
+\]
+
+All entries involving the 3rd row/column are zero because the last row/column of \(\dot C_B^{\,i}\) is zero.
+
+So the product is:
+
+\[
+C_i^{\,B}\dot C_B^{\,i}
+=
+\begin{bmatrix}
+0 & -\dot\theta & 0\\
+\dot\theta & 0 & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+---
+
+## 4) Recognize this as \( [\omega]^\times \)
+
+For rotation about the \(z\)-axis:
+
+\[
+\boldsymbol\omega=
+\begin{bmatrix}
+0\\
+0\\
+\dot\theta
+\end{bmatrix}
+\]
+
+The cross-product matrix \( [\omega]^\times \) is:
+
+\[
+[\omega]^\times =
+\begin{bmatrix}
+0 & -\omega_z & \omega_y\\
+\omega_z & 0 & -\omega_x\\
+-\omega_y & \omega_x & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & -\dot\theta & 0\\
+\dot\theta & 0 & 0\\
+0&0&0
+\end{bmatrix}
+\]
+
+Thus:
+
+\[
+\boxed{
+C_i^{\,B}\dot C_B^{\,i} = [\omega]^\times
+}
+\]
