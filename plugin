@@ -1,0 +1,243 @@
+# Plugging into the Transport Theorem (Finish the Problem)
+
+Start from the transport theorem (acceleration form), expressed in the rotating \(B\)-frame:
+
+\[
+\mathbf a_B^{\,i}
+=
+\ddot{\mathbf r}^{\,B}
++
+2\,\boldsymbol\omega\times\dot{\mathbf r}^{\,B}
++
+\dot{\boldsymbol\omega}\times\mathbf r^{\,B}
++
+\boldsymbol\omega\times(\boldsymbol\omega\times\mathbf r^{\,B})
+\]
+
+---
+
+## Given (to plug in)
+
+\[
+\mathbf r^{\,B}=
+\begin{bmatrix}
+r\\
+0\\
+0
+\end{bmatrix}
+\]
+
+So the \(B\)-frame derivatives are:
+
+\[
+\dot{\mathbf r}^{\,B}=
+\begin{bmatrix}
+\dot r\\
+0\\
+0
+\end{bmatrix},
+\qquad
+\ddot{\mathbf r}^{\,B}=
+\begin{bmatrix}
+\ddot r\\
+0\\
+0
+\end{bmatrix}
+\]
+
+Rotation about the \(z\)-axis:
+
+\[
+\boldsymbol\omega=
+\begin{bmatrix}
+0\\
+0\\
+\dot\theta
+\end{bmatrix},
+\qquad
+\dot{\boldsymbol\omega}=
+\begin{bmatrix}
+0\\
+0\\
+\ddot\theta
+\end{bmatrix}
+\]
+
+---
+
+## Evaluate each term
+
+### 1) Translational term \(\ddot{\mathbf r}^{\,B}\)
+
+\[
+\ddot{\mathbf r}^{\,B}=
+\begin{bmatrix}
+\ddot r\\
+0\\
+0
+\end{bmatrix}
+\]
+
+---
+
+### 2) Coriolis term \(2\,\boldsymbol\omega\times\dot{\mathbf r}^{\,B}\)
+
+First compute:
+
+\[
+\boldsymbol\omega\times\dot{\mathbf r}^{\,B}
+=
+\begin{bmatrix}
+0\\
+0\\
+\dot\theta
+\end{bmatrix}
+\times
+\begin{bmatrix}
+\dot r\\
+0\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+\dot\theta\,\dot r\\
+0
+\end{bmatrix}
+\]
+
+Multiply by \(2\):
+
+\[
+2\,\boldsymbol\omega\times\dot{\mathbf r}^{\,B}
+=
+\begin{bmatrix}
+0\\
+2\dot\theta\,\dot r\\
+0
+\end{bmatrix}
+\]
+
+---
+
+### 3) Euler term \(\dot{\boldsymbol\omega}\times\mathbf r^{\,B}\)
+
+\[
+\dot{\boldsymbol\omega}\times\mathbf r^{\,B}
+=
+\begin{bmatrix}
+0\\
+0\\
+\ddot\theta
+\end{bmatrix}
+\times
+\begin{bmatrix}
+r\\
+0\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+r\ddot\theta\\
+0
+\end{bmatrix}
+\]
+
+---
+
+### 4) Centrifugal term \(\boldsymbol\omega\times(\boldsymbol\omega\times\mathbf r^{\,B})\)
+
+First:
+
+\[
+\boldsymbol\omega\times\mathbf r^{\,B}
+=
+\begin{bmatrix}
+0\\
+0\\
+\dot\theta
+\end{bmatrix}
+\times
+\begin{bmatrix}
+r\\
+0\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+0\\
+r\dot\theta\\
+0
+\end{bmatrix}
+\]
+
+Then:
+
+\[
+\boldsymbol\omega\times(\boldsymbol\omega\times\mathbf r^{\,B})
+=
+\begin{bmatrix}
+0\\
+0\\
+\dot\theta
+\end{bmatrix}
+\times
+\begin{bmatrix}
+0\\
+r\dot\theta\\
+0
+\end{bmatrix}
+=
+\begin{bmatrix}
+-r\dot\theta^2\\
+0\\
+0
+\end{bmatrix}
+\]
+
+---
+
+## Sum all terms
+
+\[
+\mathbf a_B^{\,i}
+=
+\begin{bmatrix}
+\ddot r\\
+0\\
+0
+\end{bmatrix}
++
+\begin{bmatrix}
+0\\
+2\dot\theta\,\dot r\\
+0
+\end{bmatrix}
++
+\begin{bmatrix}
+0\\
+r\ddot\theta\\
+0
+\end{bmatrix}
++
+\begin{bmatrix}
+-r\dot\theta^2\\
+0\\
+0
+\end{bmatrix}
+\]
+
+Combine components:
+
+\[
+\boxed{
+\mathbf a_B^{\,i}
+=
+\begin{bmatrix}
+\ddot r - r\dot\theta^2\\
+r\ddot\theta + 2\dot r\,\dot\theta\\
+0
+\end{bmatrix}
+}
+\]
